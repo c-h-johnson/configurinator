@@ -1,9 +1,11 @@
 from utils.env import is_exe, is_root
 
 if is_root():
-    raise RuntimeError('Do not run as root')
+    msg = 'Do not run as root'
+    raise RuntimeError(msg)
 
 import packages
+
 if not packages.package_manager.root:
     packages.run()
 
@@ -28,9 +30,9 @@ if is_exe('mako'):
 if is_exe('nvim'):
     from config import neovim
     neovim.run()
-if is_exe('pycodestyle'):
-    from config import pycodestyle
-    pycodestyle.run()
+if is_exe('pylsp'):
+    from config import ruff
+    ruff.run()
 if is_exe('python') or is_exe('python3'):
     from config import python
     python.run()
