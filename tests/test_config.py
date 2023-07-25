@@ -2,7 +2,6 @@ import os
 import re
 
 import pytest
-
 from utils.config import ConfigEditor
 
 _cfg_file = 'test.cfg'

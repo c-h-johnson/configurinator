@@ -1,1 +1,1 @@
-sudo python root.py && python user.py
+sudo python -m configurinator && python -m configurinator
