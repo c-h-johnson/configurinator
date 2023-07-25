@@ -69,7 +69,7 @@ def run(force_bg: bool = False):
                     default='fill',
                 )
                 cfg_edit.add(
-                    f'output * bg {new_bg} {mode}',
+                    f'output * bg {new_bg.path} {mode}',
                     under='# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)',
                     replace_matching='bg'
                 )
@@ -106,7 +106,6 @@ def run(force_bg: bool = False):
 
         cfg_edit.add('default_border none')
         cfg_edit.add('include /etc/sway/config.d/*')
-
 
 if __name__ == '__main__':
     run(force_bg=True)
