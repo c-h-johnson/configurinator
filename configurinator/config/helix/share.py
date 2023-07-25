@@ -20,10 +20,7 @@ for i in ['hx', 'helix']:
         EXE_NAME = i
         break
 
-if EXE_NAME:
-    VERSION = get_version(EXE_NAME)
-else:
-    VERSION = None
+VERSION = get_version(EXE_NAME) if EXE_NAME else None
 
 CMD_ARGS = []
 if VERSION >= Version(22, 12) and platform.system() in ['Linux', 'Darwin']:

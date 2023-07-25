@@ -1,6 +1,5 @@
 import abc
 import os
-from typing import Optional
 import urllib.request
 
 from utils.env import is_exe, run
@@ -11,27 +10,25 @@ class ExecutableNotFoundError(OSError):
 
 
 class Exe:
-    """
-    An executable file accessible on $PATH
-    """
+    """An executable file accessible on $PATH."""
 
     def __init__(self, name: str, *args: tuple[str, ...]):
         self.name = name
         self.args = list(args)
 
-    def _can_run(func):
-        def inner(self, *args, **kwargs):
-            if not self.exists:
-                raise ExecutableNotFoundError()
+    def _can_run(self, func):
+        def inner(self_inner, *args, **kwargs):
+            if not self_inner.exists:
+                raise ExecutableNotFoundError
 
-            return func(self, *args, **kwargs)
+            return func(self_inner, *args, **kwargs)
 
         return inner
 
     @property
     @_can_run
     def command(self) -> str:
-        return ' '.join([self.name] + self.args)
+        return ' '.join([self.name, *self.args])
 
     @property
     def exists(self) -> bool:
@@ -43,9 +40,7 @@ class Exe:
 
 
 class File:
-    """
-    A file that exists on the filesystem
-    """
+    """A file that exists on the filesystem."""
 
     def __init__(self, path: str):
         self._path = path
@@ -57,7 +52,8 @@ class File:
     @property
     def path(self) -> str:
         if not self.exists:
-            raise FileNotFoundError(f'{self._path} does not exist')
+            msg = f'{self._path} does not exist'
+            raise FileNotFoundError(msg)
 
         return self._path
 
@@ -67,9 +63,7 @@ class File:
 
 
 class RemoteResource(abc.ABC):
-    """
-    A remote resource that can be downloaded and possibly updated
-    """
+    """A remote resource that can be downloaded and possibly updated."""
 
     def __init__(self, url: str):
         self._url = url
@@ -80,26 +74,21 @@ class RemoteResource(abc.ABC):
 
     @abc.abstractmethod
     def download(self):
-        """
-        Download this resource to the specified path. Must be implemented.
-        """
-        pass
+        """Download this resource to the specified path. Must be implemented."""
 
+    @abc.abstractmethod
     def update(self):
-        """
-        Update the resource at the specified path. Must be implemented if the source supports checking for changes without downloading everything.
-        """
-        pass
+        """Update the resource at the specified path. Must be implemented if the source supports checking for changes without downloading everything."""
 
 
-class UrlResource(RemoteResource):
-    def __init__(self, url: str, name: Optional[str] = None):
-        """
-        A single remote file
+class Re(RemoteResource):
+    def __init__(self, url: str, name: str | None = None):
+        """Single remote file.
 
         Args:
-            url: URL of file
-            name: override the name of the file from url
+        ----
+        url: URL of file
+        name: override the name of the file from url
         """
         super().__init__(url)
 
@@ -125,9 +114,7 @@ GIT = Exe('git')
 
 
 class GitResource(RemoteResource):
-    """
-    A git repository that can be cloned and pulled
-    """
+    """A git repository that can be cloned and pulled."""
 
     def __init__(self, url: str):
         super().__init__(url)
@@ -140,12 +127,12 @@ class GitResource(RemoteResource):
 
 
 class RemoteBundle:
-    """
-    A superset of `RemoteResource` that includes auxilary information that is required to automatically extract and select the required parts
-    """
+    """A superset of `RemoteResource` that includes auxilary information that is required to automatically extract and select the required parts."""
+
     def __init__(self, name: str, resource: RemoteResource, files: list[str]):
         if not files:
-            raise IndexError('files is empty')
+            msg = 'files is empty'
+            raise IndexError(msg)
 
         self._name = name
         self._resource = resource

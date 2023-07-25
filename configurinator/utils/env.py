@@ -15,8 +15,8 @@ def cpu_name() -> str:
 
     if model_name is None:
         return ''
-    else:
-        return model_name[model_name.find(':')+2:-1]
+
+    return model_name[model_name.find(':')+2:-1]
 
 
 def run(*args: tuple[str, ...]) -> str:
@@ -25,11 +25,11 @@ def run(*args: tuple[str, ...]) -> str:
 
 
 def rm(path: str) -> bool:
-    """
-    Remove `path`
+    """Remove `path`.
 
     Args:
-        path: path to remove
+    ----
+    path: path to remove
     Returns:
         bool: if the path existed
     """
@@ -45,9 +45,7 @@ def rm(path: str) -> bool:
 
 
 def ln(target, link_name):
-    """
-    Create a symbolic link `link_name` that points to `target`
-    """
+    """Create a symbolic link `link_name` that points to `target`."""
     if not os.path.islink(link_name):
         rm(link_name)
         os.symlink(target, link_name)
@@ -78,8 +76,8 @@ def is_root() -> bool:
 
 
 def select_font(*fonts: list[str], default: str) -> str:
-    """
-    Select a font from fonts passed as arguements.
+    """Select a font from fonts passed as arguements.
+
     Select first available font with fallback to `default`.
     """
     available_fonts = run('fc-list')

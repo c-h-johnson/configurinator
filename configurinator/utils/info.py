@@ -1,5 +1,5 @@
-import itertools
 import functools
+import itertools
 import re
 
 from utils.env import run
@@ -38,7 +38,7 @@ class Version:
             if i < j:
                 return True
             # if the most significant version number that is not equal visited so far is greater then we are sure the version is not less
-            elif i > j:
+            if i > j:
                 return False
         return False
 

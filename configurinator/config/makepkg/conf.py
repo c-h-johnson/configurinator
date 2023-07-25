@@ -1,5 +1,6 @@
 from utils.config import ConfigEditor
 
+
 def run():
     with ConfigEditor('/etc/makepkg.conf', '# ') as cfg_edit:
         under = """#########################################################################

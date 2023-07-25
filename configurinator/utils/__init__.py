@@ -1,6 +1,6 @@
-from collections.abc import Iterator
 import importlib
 import pkgutil
+from collections.abc import Iterator
 from types import ModuleType
 
 

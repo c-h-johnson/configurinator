@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
 from collections import namedtuple
-from typing import Optional
 
 from packages.package_managers import package_manager
 from utils.ui import select, yesno
@@ -25,11 +24,8 @@ class PackageEntry(ABC):
         return self._installed()
 
     @abstractmethod
-    def propose(self, previous_response: Optional[bool] = None) -> ProposalResponse:
-        """
-        ask the user to select packages
-        """
-        pass
+    def propose(self, previous_response: bool | None = None) -> ProposalResponse:
+        """Ask the user to select packages."""
 
 
 class PackageList(PackageEntry):
@@ -42,9 +38,9 @@ class PackageList(PackageEntry):
         self.packages += packages
 
     def _installed(self) -> bool:
-        return all([i.installed for i in self.packages])
+        return all(i.installed for i in self.packages)
 
-    def propose(self, previous_response: Optional[bool] = None) -> ProposalResponse:
+    def propose(self, previous_response: bool | None = None) -> ProposalResponse:
         packages_to_install = []
         for i in self.packages:
             result = i.propose(previous_response)
@@ -54,11 +50,8 @@ class PackageList(PackageEntry):
 
 
 class Package(PackageEntry):
-    def __init__(self, name, why: Optional[str] = None, **kwargs):
-        """
-        if in doubt `name` should be the name of the binary
-        available `**kwargs` correspond to the `name`s defined in `./package_managers.py`
-        """
+    def __init__(self, name, why: str | None = None, **kwargs):
+        """If in doubt `name` should be the name of the binary available `**kwargs` correspond to the `name`s defined in `./package_managers.py`."""
         super().__init__()
 
         self.name = kwargs.get(package_manager.name, name)
@@ -73,7 +66,7 @@ class Package(PackageEntry):
     def _installed(self) -> bool:
         return package_manager.is_installed(self.name)
 
-    def propose(self, previous_response: Optional[bool] = None) -> ProposalResponse:
+    def propose(self, previous_response: bool | None = None) -> ProposalResponse:
         install = False
         propose_depends = False
         if not self.name:
@@ -87,8 +80,8 @@ class Package(PackageEntry):
             prompt = f'Install {self.name}?'
             if self.why:
                 prompt += f' ({self.why})'
-            install, all = yesno(prompt)
-            if all:
+            install, all_selected = yesno(prompt)
+            if all_selected:
                 # if in a `PackageList` every subsequent package will also be installed without user interaction
                 previous_response = install
 
@@ -100,17 +93,15 @@ class Package(PackageEntry):
 
 
 class PackageChoice(PackageList):
-    """
-    A mutually exclusive package selection
-    """
+    """A mutually exclusive package selection."""
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
     def _installed(self) -> bool:
-        return any([i.installed for i in self.packages])
+        return any(i.installed for i in self.packages)
 
-    def propose(self, previous_response: Optional[bool] = None) -> ProposalResponse:
+    def propose(self, previous_response: bool | None = None) -> ProposalResponse:
         choice = None
         if not self.installed:
             options = [i.name for i in self.packages if i.name]

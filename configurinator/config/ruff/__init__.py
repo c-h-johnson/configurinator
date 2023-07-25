@@ -12,7 +12,7 @@ def run():
 
         cfg_edit.add('cache-dir = "/tmp/.ruff_cache"', under=section)
 
-        cfg_edit.add('ignore = ["ANN00", "ANN10", "ANN201", "ANN204", "D10", "E501"]', under=section)
+        cfg_edit.add('ignore = ["ANN00", "ANN10", "ANN20", "B006", "D10", "E501", "PERF203", "PLR09", "PLR2004", "SIM300"]', under=section)
 
         cfg_edit.add('ignore-init-module-imports = true', under=section)
 

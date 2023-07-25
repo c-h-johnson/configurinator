@@ -7,10 +7,7 @@ opengl_unsupported = []
 
 
 def _opengl_supported(cpu: str) -> bool:
-    for unsupported in opengl_unsupported:
-        if unsupported in cpu:
-            return False
-    return True
+    return all(unsupported not in cpu for unsupported in opengl_unsupported)
 
 
 def command() -> str:

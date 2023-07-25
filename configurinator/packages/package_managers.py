@@ -38,9 +38,9 @@ class Arch(PackageManager):
     def is_installed(self, package: str) -> bool:
         try:
             run(self.name, '-Q', package)
-            return True
         except CalledProcessError:
             return False
+        return True
 
 
 class Brew(PackageManager):
@@ -68,9 +68,9 @@ class Debian(PackageManager):
     def is_installed(self, package: str) -> bool:
         try:
             run('dpkg', '-l', package)
-            return True
         except CalledProcessError:
             return False
+        return True
 
 
 class Gentoo(PackageManager):
@@ -131,5 +131,6 @@ for i in available_package_managers:
         break
 
 if not package_manager:
-    raise RuntimeError('could not find a package manager')
+    msg = 'could not find a package manager'
+    raise RuntimeError(msg)
 print(f'found package manager {package_manager.name}')

@@ -1,17 +1,13 @@
-from collections import namedtuple
 import os
-from typing import Optional, Union
+from collections import namedtuple
 
-from common import File, UrlResource, group_url, RemoteBundleList
+from common import File, RemoteBundleList, UrlResource, group_url
 from utils.env import dotfile_path
 
 
-def browse(f_list: Union[dict, list]) -> Optional[File]:
+def browse(f_list: dict | list) -> File | None:
     directory = isinstance(f_list, dict)
-    if directory:
-        opts = f_list.keys()
-    else:
-        opts = [f.name for f in f_list]
+    opts = f_list.keys() if directory else [f.name for f in f_list]
 
     while True:
         selection = select(*opts, back=True)
@@ -52,7 +48,7 @@ def get_bg(default_files: list[str] = []) -> File:
             if not f:
                 continue
             return f.download(dotfile_path('Pictures/Wallpapers'))
-        elif idx in range(2, 4):
+        if idx in range(2, 4):
             if idx == 2:
                 path = input('local path (enter to go back): ')
             else:  # idx == 3
@@ -142,7 +138,7 @@ def yesno(prompt: str, repeat: bool = False) -> YesNoResult:
         if len(response) > max_len:
             print(f'Input "{response}" invalid: too many characters')
             continue
-        elif len(response) == 2 and response[1] == 'a':
+        if len(response) == 2 and response[1] == 'a':
             result.all = True
         elif len(response) == 2:
             print(f'Input "{response}" invalid: {response[1]} is not a valid character')
@@ -158,8 +154,5 @@ def select_remote_file(remote_bundle_list: RemoteBundleList, path: str) -> File:
     remote_bundle.resource.download(dir_path)
 
     files = remote_bundle.files
-    if len(files) == 1:
-        selected_file = files[0]
-    else:
-        selected_file = select(*files)
+    selected_file = files[0] if len(files) == 1 else select(*files)
     return File(os.path.join(dir_path, selected_file))

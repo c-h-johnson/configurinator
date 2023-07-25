@@ -4,18 +4,16 @@ from config import firefox
 from utils.config import ConfigEditor
 
 
-def pref(id, val):
+def pref(name, val):
     if isinstance(val, bool):
-        if val:
-            val_str = 'true'
-        else:
-            val_str = 'false'
+        val_str = 'true' if val else 'false'
     elif isinstance(val, int):
         val_str = str(val)
     else:
-        raise RuntimeError(f'{val} of type {type(val)} is not a valid preference value')
+        msg = f'{val} of type {type(val)} is not a valid preference value'
+        raise TypeError(msg)
 
-    return f'user_pref("{id}", {val_str});'
+    return f'user_pref("{name}", {val_str});'
 
 
 def run():

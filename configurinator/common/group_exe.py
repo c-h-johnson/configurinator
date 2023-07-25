@@ -1,6 +1,5 @@
-from config import helix
-
 from common import Exe
+from config import helix
 
 # ordered descending
 editors = {

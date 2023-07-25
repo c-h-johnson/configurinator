@@ -4,7 +4,7 @@ from common import GitResource, RemoteBundle, RemoteBundleList
 from config import alacritty
 from utils.config import ConfigEditor
 from utils.env import select_font
-from utils.ui import yesno, select_remote_file
+from utils.ui import select_remote_file, yesno
 
 THEMES = RemoteBundleList(
     RemoteBundle(

@@ -23,7 +23,7 @@ try:
 
         default = os.path.join(root, _installs_cfg['Profile0']['Path'])
         print(f'found firefox user directory: {default}')
-except Exception:
+except KeyError:
     print('Error: need to setup firefox')
     supported = False
 

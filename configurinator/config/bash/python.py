@@ -2,6 +2,7 @@ from config import bash
 from utils.config import ConfigEditor
 from utils.env import is_exe
 
+
 def run():
     with ConfigEditor(bash.bashrc) as cfg_edit:
         under = '# python env'

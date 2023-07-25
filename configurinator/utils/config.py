@@ -1,18 +1,18 @@
 import os
 import re
-from typing import Callable
+from collections.abc import Callable
 
 
 def get_index(func):
-    """
-    Get the index of the text.
-    """
+    """Get the index of the text."""
 
     def decorator(self, text: str, *args, **kwargs):
-        if 'index' in kwargs.keys():  # do not overwrite file_contents if provided
-            raise KeyError('do not use the index argument; it is provided automatically')
+        if 'index' in kwargs:  # do not overwrite file_contents if provided
+            msg = 'do not use the index argument; it is provided automatically'
+            raise KeyError(msg)
         if not isinstance(text, str):
-            raise TypeError(f'Text must be str, got {type(text)}: {text} instead')
+            msg = f'Text must be str, got {type(text)}: {text} instead'
+            raise TypeError(msg)
         kwargs['index'] = self._io.find(text)
         return func(self, text, *args, **kwargs)
     return decorator
@@ -32,10 +32,11 @@ class ConfigEditor:
                 print(directory, 'successfully created')
             except FileExistsError:
                 pass
-            open(self._cfg_file, 'w').close()
+            with open(self._cfg_file, 'w') as f:
+                pass
             print(self._cfg_file, 'successfully created')
 
-        with open(self._cfg_file, 'r', encoding='utf-8') as f:
+        with open(self._cfg_file, encoding='utf-8') as f:
             self._io = f.read()
 
         return self
@@ -57,27 +58,28 @@ class ConfigEditor:
             allow_duplicates: bool = False,
             enclose: str = '',
             index: int = -1):
-        """
-        Add a line.
+        r"""Add a line.
+
         The line will be added under a heading if under is set.
         If the heading does not exist it will be created.
-        Use \\n for multiple lines.
+        Use \n for multiple lines.
         Prints and ends if the desired content already exists in the file.
         If the desired content already exists in the file but is commented out it will be uncommented.
 
         Args:
-            text: the line(s) to add
-            under: the line to add the content under as a regex
-            start: add the line to the start of the file if `under` is not found
-            replace_matching: check if a similar statement to the content exists before the provided string
-            allow_duplicates: if `text` is detected but is not under `under`, create a new line under `under`
-            enclose: append this string on a new line under `text` *only* if `under` does not exist
+        ----
+        text: the line(s) to add
+        under: the line to add the content under as a regex
+        start: add the line to the start of the file if `under` is not found
+        replace_matching: check if a similar statement to the content exists before the provided string
+        allow_duplicates: if `text` is detected but is not under `under`, create a new line under `under`
+        enclose: append this string on a new line under `text` *only* if `under` does not exist
+        index: internal use
         """
         if self._is_comment(index):
             self.uncomment(text)
             return
-        elif index != -1:
-            if not (allow_duplicates and not (text in self._io[self._io.find(under):])):
+        if index != -1 and not (allow_duplicates and text not in self._io[self._io.find(under):]):
                 # line already exists
                 return
 
@@ -86,10 +88,7 @@ class ConfigEditor:
             if matching_content and matching_content in self._io:
                 self.remove(matching_content)
 
-        if start:
-            insert_point = 0
-        else:
-            insert_point = len(self._io)
+        insert_point = 0 if start else len(self._io)
 
         if under:
             if (match := self._io.find(under)) != -1:
@@ -108,30 +107,28 @@ class ConfigEditor:
         print(f'Added line " {text} "')
 
     def add_lines(self, *lines, under: str = '', **options):
-        """
-        Applies add sequentially to strings passed with the previous string passed as the `under` argument.
-        """
+        """Apply add sequentially to strings passed with the previous string passed as the `under` argument."""
         for line in lines:
             self.add(line, under=under, **options)
             under = line
 
     @get_index
-    def exists(self, text: str, include_comments: bool = False, index: int = -1) -> bool:
-        """
-        Tests if `text` exists in the file.
-        """
+    def exists(self, _text: str, include_comments: bool = False, index: int = -1) -> bool:
+        """Test if `text` exists in the file."""
         return index != -1 and ((not self._is_comment(index)) or include_comments)
 
     @get_index
     def replace(self, text: str, with_this: str, index: int):
-        """
-        Replace a line.
-        Use \\n for multiple lines.
+        r"""Replace a line.
+
+        Use \n for multiple lines.
         Prints and ends if the line(s) to replace cannot be found.
 
         Args:
-            text: the line(s) to replace
-            with_this: the line to add the content under as a regex
+        ----
+        text: the line(s) to replace
+        with_this: the line to add the content under as a regex
+        index: internal use
         """
         if not text:
             print('Nothing to replace')
@@ -145,9 +142,7 @@ class ConfigEditor:
 
     @get_index
     def remove(self, text: str, index: int):
-        """
-        Remove the line(s) that contain(s) `text`
-        """
+        """Remove the line(s) that contain(s) `text`."""
         if not text:
             return
         if index == -1:
@@ -159,8 +154,7 @@ class ConfigEditor:
         self._cut(index, content_end)
 
     def for_each(self, regex: re.Pattern, function: Callable[[str], None]):
-        """
-        Run a function on all lines matching the regex.
+        """Run a function on all lines matching the regex.
 
         Supported functions:
             ConfigEditor.remove
@@ -174,18 +168,14 @@ class ConfigEditor:
 
     @get_index
     def comment(self, text: str, index: int):
-        """
-        Comment out the line `text` if it is not already a comment.
-        """
+        """Comment out the line `text` if it is not already a comment."""
         if not self._is_comment(index):
             self._insert(self._comment_delimiter + ' ', index)
             print(f'Commented " {text} "')
 
     @get_index
     def uncomment(self, text: str, index: int):
-        """
-        Uncomment the line `text` if it is a comment.
-        """
+        """Uncomment the line `text` if it is a comment."""
         if self._is_comment(index):
             self._cut(self._comment_start(index), index)
             print(f'Uncommented " {text} "')

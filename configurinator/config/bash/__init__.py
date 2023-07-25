@@ -1,7 +1,15 @@
 from config.bash import (
-        alias, alternative, arguments, env, helix, history, neovim, profile, prompt,
-        python,
-        )
+    alias,
+    alternative,
+    arguments,
+    env,
+    helix,
+    history,
+    neovim,
+    profile,
+    prompt,
+    python,
+)
 from utils.env import dotfile_path
 
 profile_path = dotfile_path('.bash_profile')

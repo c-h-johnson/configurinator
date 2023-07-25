@@ -57,8 +57,7 @@ def run(force_bg: bool = False):
             replace_matching='exec',
         )
 
-        if cfg_edit.exists(f'output * bg {DEFAULT_WALLPAPERS[5]} fill') or force_bg:
-            if yesno('change the background?').result:
+        if (cfg_edit.exists(f'output * bg {DEFAULT_WALLPAPERS[5]} fill') or force_bg) and yesno('change the background?').result:
                 new_bg = get_bg(DEFAULT_WALLPAPERS)
                 mode = select(
                     'stretch',
@@ -71,20 +70,20 @@ def run(force_bg: bool = False):
                 cfg_edit.add(
                     f'output * bg {new_bg.path} {mode}',
                     under='# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)',
-                    replace_matching='bg'
+                    replace_matching='bg',
                 )
 
         # enable swayidle
         if not cfg_edit.exists(CMD_IDLE) and yesno('Enable swayidle (lock and screen timeout)?'):
             cfg_edit.add_lines(
-                f"exec {CMD_IDLE} -w \\",
+                f'exec {CMD_IDLE} -w \\',
                 # lock after 5 minutes
                 f"         timeout 300 '{CMD_LOCK}' \\",
                 # turn off screen after 10 minutes
                 "         timeout 600 'swaymsg \"output * power off\"' resume 'swaymsg \"output * power on\"' \\",
                 # lock on sleep
                 f"         before-sleep '{CMD_LOCK}'",
-                under='### Idle configuration'
+                under='### Idle configuration',
             )
 
         # keyboard layout must be defined in this file else non us+qwerty layouts will not work properly
@@ -101,7 +100,7 @@ def run(force_bg: bool = False):
         if is_exe('grim') and is_exe('slurp') and is_exe('wl-copy'):
             cfg_edit.add(
                 exec_cmd('$mod+Shift+s', 'grim -g "$(slurp)" - | wl-copy'),
-                under='# take a screenshot and copy to clipboard'
+                under='# take a screenshot and copy to clipboard',
             )
 
         cfg_edit.add('default_border none')
