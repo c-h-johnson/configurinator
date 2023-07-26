@@ -1,5 +1,5 @@
-from packages.definitions import PackageList
-from utils import iter_submodules
+from configurinator.packages.definitions import PackageList
+from configurinator.utils import iter_submodules
 
 
 def add_all(base: PackageList):

@@ -2,7 +2,7 @@ import abc
 import os
 import urllib.request
 
-from utils.env import is_exe, run
+from configurinator.utils.env import is_exe, run
 
 
 class ExecutableNotFoundError(OSError):
@@ -16,7 +16,8 @@ class Exe:
         self.name = name
         self.args = list(args)
 
-    def _can_run(self, func):
+    @staticmethod
+    def _can_run(func):
         def inner(self_inner, *args, **kwargs):
             if not self_inner.exists:
                 raise ExecutableNotFoundError
@@ -73,15 +74,15 @@ class RemoteResource(abc.ABC):
         return self._url
 
     @abc.abstractmethod
-    def download(self):
+    def download(self, path: str):
         """Download this resource to the specified path. Must be implemented."""
 
     @abc.abstractmethod
-    def update(self):
+    def update(self, path: str):
         """Update the resource at the specified path. Must be implemented if the source supports checking for changes without downloading everything."""
 
 
-class Re(RemoteResource):
+class UrlResource(RemoteResource):
     def __init__(self, url: str, name: str | None = None):
         """Single remote file.
 
@@ -108,6 +109,9 @@ class Re(RemoteResource):
             urllib.request.urlretrieve(url=self._url, filename=full_path)
 
         return File(full_path)
+
+    def update(self, path: str):
+        raise NotImplementedError
 
 
 GIT = Exe('git')

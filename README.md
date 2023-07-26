@@ -18,16 +18,12 @@ Alpine, Gentoo, NixOS, OpenSUSE, Red Hat, MacOS, Windows, and derivatives should
 
 ## Supported program configs
 
-all configurations are listed in [./config/](config/)
+all configurations are listed in [./configurinator/config/](configurinator/config/)
 
 # Requirements
 
-- python >= 3.8
+- python >= 3.10
 
 # Usage
 
 to configure everything automatically run `sh all.sh`
-
-you can also selectively run for each program: `python config/firefox`
-
-you can even choose to only configure a certain aspect of the program: `python config/bash/prompt.py`

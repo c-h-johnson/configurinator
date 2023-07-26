@@ -2,7 +2,7 @@ import functools
 import itertools
 import re
 
-from utils.env import run
+from configurinator.utils.env import run
 
 
 @functools.total_ordering

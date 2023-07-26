@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from subprocess import CalledProcessError
 
-from utils.env import is_exe, run
+from configurinator.utils.env import is_exe, run
 
 
 class PackageManager(ABC):

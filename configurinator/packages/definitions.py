@@ -1,8 +1,8 @@
 from abc import ABC, abstractmethod
 from collections import namedtuple
 
-from packages.package_managers import package_manager
-from utils.ui import select, yesno
+from configurinator.packages.package_managers import package_manager
+from configurinator.utils.ui import select, yesno
 
 """
 packages: list[str]

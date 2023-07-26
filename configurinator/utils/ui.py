@@ -1,8 +1,8 @@
 import os
 from collections import namedtuple
 
-from common import File, RemoteBundleList, UrlResource, group_url
-from utils.env import dotfile_path
+from configurinator.common import File, RemoteBundleList, UrlResource, group_url
+from configurinator.utils.env import dotfile_path
 
 
 def browse(f_list: dict | list) -> File | None:

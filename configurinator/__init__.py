@@ -1,5 +1,5 @@
-import packages
-from utils.env import is_exe, is_root
+from configurinator import packages
+from configurinator.utils.env import is_exe, is_root
 
 
 def _user() -> None:

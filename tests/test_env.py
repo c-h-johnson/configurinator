@@ -1,6 +1,7 @@
 import os
 
-from utils.env import dotfile_path, is_exe
+from configurinator.utils.env import dotfile_path, is_exe
+
 
 def test_dotfile_path():
     user = os.getlogin()

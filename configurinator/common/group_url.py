@@ -1,4 +1,4 @@
-from common import UrlResource as Re
+from configurinator.common import UrlResource as Re
 
 # hosts
 _512pixels = 'https://512pixels.net/downloads/macos-wallpapers'

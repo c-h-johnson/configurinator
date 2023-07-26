@@ -1,7 +1,7 @@
-from packages import groups
-from packages.definitions import Package, PackageChoice, PackageList
-from packages.package_managers import package_manager
-from utils.ui import yesno
+from configurinator.packages import groups
+from configurinator.packages.definitions import Package, PackageChoice, PackageList
+from configurinator.packages.package_managers import package_manager
+from configurinator.utils.ui import yesno
 
 base = PackageList(
     Package('bottom', apt=''),

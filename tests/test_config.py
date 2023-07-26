@@ -2,7 +2,8 @@ import os
 import re
 
 import pytest
-from utils.config import ConfigEditor
+
+from configurinator.utils.config import ConfigEditor
 
 _cfg_file = 'test.cfg'
 
@@ -26,7 +27,7 @@ class TestConfig:
         return self._cfg
 
     def _verify_cfg_file(self, cfg: str):
-        with open(_cfg_file, 'r') as f:
+        with open(_cfg_file) as f:
             assert f.read() == cfg
             f.seek(0)
 
@@ -36,7 +37,7 @@ heading = TestConfig(
 # options
 a = 1
 # b = 2
-"""
+""",
 )
 
 regex = re.compile('a = 1')
@@ -50,15 +51,13 @@ def test_is_comment():
     }
 
     for test, comment_str in test_cfgs.items():
-        with test as cfg_test:
-            with ConfigEditor(_cfg_file, comment_str) as cfg_edit:
-                assert cfg_edit._is_comment(regex.search(cfg_test.cfg).start())
+        with test as cfg_test, ConfigEditor(_cfg_file, comment_str) as cfg_edit:
+            assert cfg_edit._is_comment(regex.search(cfg_test.cfg).start())
 
-    with heading as cfg_test:
-        with ConfigEditor(_cfg_file) as cfg_edit:
-            assert not cfg_edit._is_comment(regex.search(cfg_test.cfg).start())
-            assert cfg_edit._is_comment(re.compile('b = 2').search(cfg_test.cfg).start())
-            assert not cfg_edit._is_comment(-1)
+    with heading as cfg_test, ConfigEditor(_cfg_file) as cfg_edit:
+        assert not cfg_edit._is_comment(regex.search(cfg_test.cfg).start())
+        assert cfg_edit._is_comment(re.compile('b = 2').search(cfg_test.cfg).start())
+        assert not cfg_edit._is_comment(-1)
 
 
 def test_comment():
@@ -85,7 +84,7 @@ def test_comment():
 # options
 # a = 1
 # b = 2
-"""
+""",
 )
 
 
@@ -109,7 +108,7 @@ def test_uncomment():
 # options
 a = 1
 b = 2
-"""
+""",
 )
 
 
@@ -203,7 +202,7 @@ def test_add_lines():
                 'a = 1',
                 'b = 2',
                 'c = 3',
-                under='# options'
+                under='# options',
             )
         cfg_test._verify_cfg_file("""
 # options
@@ -214,21 +213,18 @@ c = 3
 
 
 def test_exists():
-    with heading as _:
-        with ConfigEditor(_cfg_file) as cfg_edit:
-            assert cfg_edit.exists('a = 1')
-            assert not cfg_edit.exists('b = 2')
-            assert not cfg_edit.exists('c = 3')
+    with heading as _, ConfigEditor(_cfg_file) as cfg_edit:
+        assert cfg_edit.exists('a = 1')
+        assert not cfg_edit.exists('b = 2')
+        assert not cfg_edit.exists('c = 3')
 
-            assert cfg_edit.exists('a = 1', True)
-            assert cfg_edit.exists('b = 2', True)
-            assert cfg_edit.exists('# b = 2', True)
-            assert not cfg_edit.exists('c = 3', True)
+        assert cfg_edit.exists('a = 1', True)
+        assert cfg_edit.exists('b = 2', True)
+        assert cfg_edit.exists('# b = 2', True)
+        assert not cfg_edit.exists('c = 3', True)
 
-    with heading as _:
-        with ConfigEditor(_cfg_file) as cfg_edit:
-            with pytest.raises(KeyError):
-                cfg_edit.exists('a = 1', index=0)
+    with heading as _, ConfigEditor(_cfg_file) as cfg_edit, pytest.raises(KeyError):
+        cfg_edit.exists('a = 1', index=0)
 
 
 def test_replace():
@@ -239,7 +235,7 @@ def test_replace():
 # options
 a = 2
 # b = 2
-"""
+""",
 )
 
     with heading as cfg_test:
@@ -252,10 +248,9 @@ a = 2
             cfg_edit.replace('', 'a = 2')
         cfg_test._verify_cfg_file(heading.cfg)
 
-    with heading as cfg_test:
-        with ConfigEditor(_cfg_file) as cfg_edit:
-            with pytest.raises(KeyError):
-                cfg_edit.replace('a = 1', 'a = 2', index=0)
+    with heading as cfg_test, ConfigEditor(_cfg_file) as cfg_edit:
+        with pytest.raises(KeyError):
+            cfg_edit.replace('a = 1', 'a = 2', index=0)
 
 
 def test_remove():
@@ -265,7 +260,7 @@ def test_remove():
         cfg_test._verify_cfg_file("""
 # options
 # b = 2
-"""
+""",
 )
 
     with heading as cfg_test:
@@ -278,7 +273,6 @@ def test_remove():
             cfg_edit.remove('')
         cfg_test._verify_cfg_file(heading.cfg)
 
-    with heading as cfg_test:
-        with ConfigEditor(_cfg_file) as cfg_edit:
-            with pytest.raises(KeyError):
-                cfg_edit.remove('a = 1', index=0)
+    with heading as cfg_test, ConfigEditor(_cfg_file) as cfg_edit:
+        with pytest.raises(KeyError):
+            cfg_edit.remove('a = 1', index=0)
