@@ -1,8 +1,8 @@
 import os
 import platform
 
-from config.helix import share
-from utils.env import ln
+from configurinator.config.helix import share
+from configurinator.utils.env import ln
 
 log = 'helix.log'
 

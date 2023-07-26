@@ -1,7 +1,7 @@
 import os
 
-from config import firefox
-from utils.config import ConfigEditor
+from configurinator.config import firefox
+from configurinator.utils.config import ConfigEditor
 
 
 def pref(name, val):

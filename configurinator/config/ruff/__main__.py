@@ -1,3 +1,3 @@
-from config import ruff
+from configurinator.config import ruff
 
 ruff.run()

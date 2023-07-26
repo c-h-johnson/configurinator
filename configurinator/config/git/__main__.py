@@ -1,3 +1,3 @@
-from config import git
+from configurinator.config import git
 
 git.run()

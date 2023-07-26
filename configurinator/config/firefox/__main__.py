@@ -1,3 +1,3 @@
-from config import firefox
+from configurinator.config import firefox
 
 firefox.run()

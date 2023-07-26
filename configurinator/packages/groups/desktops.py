@@ -1,6 +1,6 @@
-from packages.definitions import Package, PackageList
-from packages.groups import desktop_applications
-from utils.env import is_exe
+from configurinator.packages.definitions import Package, PackageList
+from configurinator.packages.groups import desktop_applications
+from configurinator.utils.env import is_exe
 
 installed = []
 

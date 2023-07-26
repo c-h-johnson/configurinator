@@ -1,5 +1,5 @@
-from config.python import history
-from utils.env import dotfile_path
+from configurinator.config.python import history
+from configurinator.utils.env import dotfile_path
 
 pythonrc = dotfile_path('.pythonrc')
 

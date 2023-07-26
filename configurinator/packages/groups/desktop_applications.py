@@ -1,4 +1,4 @@
-from packages.definitions import Package, PackageChoice, PackageList
+from configurinator.packages.definitions import Package, PackageChoice, PackageList
 
 browser_web = PackageChoice(
     Package('firefox'),

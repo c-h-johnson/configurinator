@@ -7,34 +7,34 @@ def _user() -> None:
         packages.run()
 
     if is_exe('alacritty'):
-        from config import alacritty
+        from configurinator.config import alacritty
         alacritty.run()
     if is_exe('bash'):
-        from config import bash
+        from configurinator.config import bash
         bash.run()
     if is_exe('firefox'):
-        from config import firefox
+        from configurinator.config import firefox
         firefox.run()
     if is_exe('git'):
-        from config import git
+        from configurinator.config import git
         git.run()
     if is_exe('hx') or is_exe('helix'):
-        from config import helix
+        from configurinator.config import helix
         helix.run()
     if is_exe('mako'):
-        from config import mako
+        from configurinator.config import mako
         mako.run()
     if is_exe('nvim'):
-        from config import neovim
+        from configurinator.config import neovim
         neovim.run()
     if is_exe('pylsp'):
-        from config import ruff
+        from configurinator.config import ruff
         ruff.run()
     if is_exe('python') or is_exe('python3'):
-        from config import python
+        from configurinator.config import python
         python.run()
     if is_exe('sway'):
-        from config import sway
+        from configurinator.config import sway
         sway.run()
 
 
@@ -43,13 +43,13 @@ def _root() -> None:
         packages.install()
 
     if is_exe('makepkg'):
-        from config import makepkg
+        from configurinator.config import makepkg
         makepkg.run()
     if is_exe('pacman'):
-        from config import pacman
+        from configurinator.config import pacman
         pacman.run()
     if is_exe('systemctl'):
-        from config import systemd
+        from configurinator.config import systemd
         systemd.run()
 
 

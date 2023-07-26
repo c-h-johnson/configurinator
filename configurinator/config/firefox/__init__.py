@@ -2,8 +2,8 @@ import configparser
 import os
 import platform
 
-from config.firefox import prefs
-from utils.env import dotfile_path
+from configurinator.config.firefox import prefs
+from configurinator.utils.env import dotfile_path
 
 supported = True
 try:

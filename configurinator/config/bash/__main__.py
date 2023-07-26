@@ -1,3 +1,3 @@
-from config import bash
+from configurinator.config import bash
 
 bash.run()

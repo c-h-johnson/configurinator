@@ -1,3 +1,3 @@
-from config import alacritty
+from configurinator.config import alacritty
 
 alacritty.run()

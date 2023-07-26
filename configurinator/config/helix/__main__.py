@@ -1,3 +1,3 @@
-from config import helix
+from configurinator.config import helix
 
 helix.run()

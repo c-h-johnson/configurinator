@@ -1,4 +1,4 @@
-from config.systemd import journal
+from configurinator.config.systemd import journal
 
 
 def run():

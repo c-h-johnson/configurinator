@@ -1,3 +1,3 @@
-from config import mako
+from configurinator.config import mako
 
 mako.run()

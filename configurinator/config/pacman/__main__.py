@@ -1,3 +1,3 @@
-from config import pacman
+from configurinator.config import pacman
 
 pacman.run()

@@ -1,9 +1,9 @@
 import os
 
-from config import neovim
-from utils.config import ConfigEditor
-from utils.env import dotfile_path, is_exe, rm
-from utils.info import Version, get_version
+from configurinator.config import neovim
+from configurinator.utils.config import ConfigEditor
+from configurinator.utils.env import dotfile_path, is_exe, rm
+from configurinator.utils.info import Version, get_version
 
 
 def _enable_lsp(cfg_edit, server, exe=None):

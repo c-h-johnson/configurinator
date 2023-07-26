@@ -1,3 +1,3 @@
-from config import neovim
+from configurinator.config import neovim
 
 neovim.run()

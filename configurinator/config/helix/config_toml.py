@@ -2,10 +2,10 @@ import glob
 import os
 import platform
 
-from config.helix import share
-from utils.config import ConfigEditor
-from utils.info import Version
-from utils.ui import select
+from configurinator.config.helix import share
+from configurinator.utils.config import ConfigEditor
+from configurinator.utils.info import Version
+from configurinator.utils.ui import select
 
 THEMES = []
 if platform.system() in ['Linux', 'Darwin']:

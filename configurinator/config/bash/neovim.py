@@ -1,7 +1,7 @@
-from common import group_exe
-from config import bash
-from utils.config import ConfigEditor
-from utils.env import dotfile_path, is_exe, rm
+from configurinator.common import group_exe
+from configurinator.config import bash
+from configurinator.utils.config import ConfigEditor
+from configurinator.utils.env import dotfile_path, is_exe, rm
 
 
 def run():

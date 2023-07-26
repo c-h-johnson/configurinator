@@ -1,6 +1,6 @@
-from config import bash
-from utils.config import ConfigEditor
-from utils.env import dotfile_path, rm
+from configurinator.config import bash
+from configurinator.utils.config import ConfigEditor
+from configurinator.utils.env import dotfile_path, rm
 
 
 def run():

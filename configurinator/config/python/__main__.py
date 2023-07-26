@@ -1,3 +1,3 @@
-from config import python
+from configurinator.config import python
 
 python.run()

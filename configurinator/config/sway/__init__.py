@@ -1,5 +1,5 @@
-from config.sway import main_config
-from utils.env import dotfile_path
+from configurinator.config.sway import main_config
+from configurinator.utils.env import dotfile_path
 
 root = dotfile_path('.config/sway')
 

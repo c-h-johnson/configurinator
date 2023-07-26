@@ -1,3 +1,3 @@
-from config import systemd
+from configurinator.config import systemd
 
 systemd.run()

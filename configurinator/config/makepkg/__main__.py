@@ -1,3 +1,3 @@
-from config import makepkg
+from configurinator.config import makepkg
 
 makepkg.run()

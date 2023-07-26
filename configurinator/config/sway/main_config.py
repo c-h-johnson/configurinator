@@ -1,10 +1,10 @@
 import os
 import shutil
 
-from config import alacritty, sway
-from utils.config import ConfigEditor
-from utils.env import is_exe
-from utils.ui import get_bg, select, yesno
+from configurinator.config import alacritty, sway
+from configurinator.utils.config import ConfigEditor
+from configurinator.utils.env import is_exe
+from configurinator.utils.ui import get_bg, select, yesno
 
 CMD_LOCK = 'swaylock -f -c 000000'
 CMD_IDLE = 'swayidle'

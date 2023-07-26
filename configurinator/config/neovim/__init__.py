@@ -1,7 +1,7 @@
 import platform
 
-from config.neovim import init
-from utils.env import dotfile_path
+from configurinator.config.neovim import init
+from configurinator.utils.env import dotfile_path
 
 supported = True
 if platform.system() == 'Linux' or platform.system() == 'Darwin':

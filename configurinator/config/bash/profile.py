@@ -1,5 +1,5 @@
-from config import bash
-from utils.config import ConfigEditor
+from configurinator.config import bash
+from configurinator.utils.config import ConfigEditor
 
 
 def run():

@@ -1,5 +1,5 @@
-from utils.config import ConfigEditor
-from utils.env import rm
+from configurinator.utils.config import ConfigEditor
+from configurinator.utils.env import rm
 
 
 def run():

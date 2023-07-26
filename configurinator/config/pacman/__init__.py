@@ -1,4 +1,4 @@
-from config.pacman import conf
+from configurinator.config.pacman import conf
 
 
 def run():

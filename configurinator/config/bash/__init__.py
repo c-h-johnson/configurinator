@@ -1,4 +1,4 @@
-from config.bash import (
+from configurinator.config.bash import (
     alias,
     alternative,
     arguments,
@@ -10,7 +10,7 @@ from config.bash import (
     prompt,
     python,
 )
-from utils.env import dotfile_path
+from configurinator.utils.env import dotfile_path
 
 profile_path = dotfile_path('.bash_profile')
 bashrc = dotfile_path('.bashrc')

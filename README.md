@@ -1,4 +1,4 @@
-# useful-scripts
+# Configurinator
 
 Configurations for a wide range of software.
 

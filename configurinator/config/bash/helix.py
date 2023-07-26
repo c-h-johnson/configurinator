@@ -1,9 +1,9 @@
 import os
 
-from common import group_exe
-from config import bash, helix
-from utils.config import ConfigEditor
-from utils.env import rm
+from configurinator.common import group_exe
+from configurinator.config import bash, helix
+from configurinator.utils.config import ConfigEditor
+from configurinator.utils.env import rm
 
 
 def run():

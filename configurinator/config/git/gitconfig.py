@@ -1,7 +1,7 @@
-from common import group_exe
-from config import git
-from utils.config import ConfigEditor
-from utils.ui import select_exe
+from configurinator.common import group_exe
+from configurinator.config import git
+from configurinator.utils.config import ConfigEditor
+from configurinator.utils.ui import select_exe
 
 
 def run():

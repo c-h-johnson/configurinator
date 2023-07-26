@@ -1,4 +1,4 @@
-from config.helix import cache, config_toml, share
+from configurinator.config.helix import cache, config_toml, share
 
 
 def run():

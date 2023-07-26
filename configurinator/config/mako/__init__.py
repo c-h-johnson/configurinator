@@ -1,5 +1,5 @@
-from utils.config import ConfigEditor
-from utils.env import dotfile_path
+from configurinator.utils.config import ConfigEditor
+from configurinator.utils.env import dotfile_path
 
 config_path = dotfile_path('.mako/config')
 

@@ -1,10 +1,10 @@
 import os
 
-from common import GitResource, RemoteBundle, RemoteBundleList
-from config import alacritty
-from utils.config import ConfigEditor
-from utils.env import select_font
-from utils.ui import select_remote_file, yesno
+from configurinator.common import GitResource, RemoteBundle, RemoteBundleList
+from configurinator.config import alacritty
+from configurinator.utils.config import ConfigEditor
+from configurinator.utils.env import select_font
+from configurinator.utils.ui import select_remote_file, yesno
 
 THEMES = RemoteBundleList(
     RemoteBundle(

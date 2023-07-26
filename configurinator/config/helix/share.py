@@ -1,7 +1,7 @@
 import platform
 
-from utils.env import dotfile_path, is_exe
-from utils.info import Version, get_version
+from configurinator.utils.env import dotfile_path, is_exe
+from configurinator.utils.info import Version, get_version
 
 supported = True
 if platform.system() in ['Linux', 'Darwin']:

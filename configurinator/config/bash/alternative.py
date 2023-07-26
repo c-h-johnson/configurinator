@@ -1,6 +1,6 @@
-from config import bash
-from utils.config import ConfigEditor
-from utils.env import is_exe
+from configurinator.config import bash
+from configurinator.utils.config import ConfigEditor
+from configurinator.utils.env import is_exe
 
 
 def run():

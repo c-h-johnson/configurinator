@@ -1,4 +1,4 @@
-from config.makepkg import conf
+from configurinator.config.makepkg import conf
 
 
 def run():

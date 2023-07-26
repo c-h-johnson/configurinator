@@ -1,5 +1,5 @@
-from config.git import gitconfig
-from utils.env import dotfile_path
+from configurinator.config.git import gitconfig
+from configurinator.utils.env import dotfile_path
 
 gitconfig_path = dotfile_path('.gitconfig')
 

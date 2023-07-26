@@ -1,5 +1,5 @@
-from config.alacritty import alacritty_yml
-from utils.env import cpu_name, dotfile_path
+from configurinator.config.alacritty import alacritty_yml
+from configurinator.utils.env import cpu_name, dotfile_path
 
 root = dotfile_path('.config/alacritty')
 
