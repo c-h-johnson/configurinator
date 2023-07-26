@@ -81,17 +81,6 @@ class Gentoo(PackageManager):
         run('sudo', self.name, *packages)
 
 
-class NixOS(PackageManager):
-    name = 'nixos-rebuild'
-    root = True
-
-    def install(self, packages: list[str]):
-        pass
-
-    def is_installed(self, package: str) -> bool:
-        pass
-
-
 class OpenSUSE(PackageManager):
     name = 'zypper'
     root = True
@@ -103,7 +92,7 @@ class OpenSUSE(PackageManager):
         pass
 
 
-class RH(PackageManager):
+class Fedora(PackageManager):
     name = 'dnf'
     root = True
 
@@ -114,23 +103,22 @@ class RH(PackageManager):
         pass
 
 
-available_package_managers = (
+AVAILABLE_PACKAGE_MANAGERS = (
     Alpine,
     Arch,
     Brew,
     Debian,
     Gentoo,
-    NixOS,
     OpenSUSE,
-    RH,
+    Fedora,
 )
 
-for i in available_package_managers:
+for i in AVAILABLE_PACKAGE_MANAGERS:
     if is_exe(i.name):
-        package_manager = i()
+        PACKAGE_MANAGER = i()
         break
 
-if not package_manager:
+if not PACKAGE_MANAGER:
     msg = 'could not find a package manager'
     raise RuntimeError(msg)
-print(f'found package manager {package_manager.name}')
+print(f'found package manager {PACKAGE_MANAGER.name}')

@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from collections import namedtuple
 
-from configurinator.packages.package_managers import package_manager
+from configurinator.packages.package_managers import PACKAGE_MANAGER
 from configurinator.utils.ui import select, yesno
 
 """
@@ -54,7 +54,7 @@ class Package(PackageEntry):
         """If in doubt `name` should be the name of the binary available `**kwargs` correspond to the `name`s defined in `./package_managers.py`."""
         super().__init__()
 
-        self.name = kwargs.get(package_manager.name, name)
+        self.name = kwargs.get(PACKAGE_MANAGER.name, name)
         self.why = why
 
         self.depends = PackageList()
@@ -64,7 +64,7 @@ class Package(PackageEntry):
         return self
 
     def _installed(self) -> bool:
-        return package_manager.is_installed(self.name)
+        return PACKAGE_MANAGER.is_installed(self.name)
 
     def propose(self, previous_response: bool | None = None) -> ProposalResponse:
         install = False
