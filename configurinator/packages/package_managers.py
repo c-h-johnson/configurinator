@@ -113,6 +113,7 @@ AVAILABLE_PACKAGE_MANAGERS = (
     Fedora,
 )
 
+PACKAGE_MANAGER = None
 for i in AVAILABLE_PACKAGE_MANAGERS:
     if is_exe(i.name):
         PACKAGE_MANAGER = i()
@@ -120,5 +121,5 @@ for i in AVAILABLE_PACKAGE_MANAGERS:
 
 if not PACKAGE_MANAGER:
     msg = 'could not find a package manager'
-    raise RuntimeError(msg)
-print(f'found package manager {PACKAGE_MANAGER.name}')
+else:
+    print(f'found package manager {PACKAGE_MANAGER.name}')

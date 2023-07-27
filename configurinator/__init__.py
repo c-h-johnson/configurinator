@@ -3,7 +3,7 @@ from configurinator.utils.env import is_exe, is_root
 
 
 def _user() -> None:
-    if not packages.PACKAGE_MANAGER.root:
+    if packages.PACKAGE_MANAGER and not packages.PACKAGE_MANAGER.root:
         packages.run()
 
     if is_exe('alacritty'):
@@ -39,7 +39,7 @@ def _user() -> None:
 
 
 def _root() -> None:
-    if packages.PACKAGE_MANAGER.root:
+    if packages.PACKAGE_MANAGER and packages.PACKAGE_MANAGER.root:
         packages.install()
 
     if is_exe('makepkg'):

@@ -54,7 +54,7 @@ class Package(PackageEntry):
         """If in doubt `name` should be the name of the binary available `**kwargs` correspond to the `name`s defined in `./package_managers.py`."""
         super().__init__()
 
-        self.name = kwargs.get(PACKAGE_MANAGER.name, name)
+        self.name = kwargs.get(PACKAGE_MANAGER.name, name) if PACKAGE_MANAGER else None
         self.why = why
 
         self.depends = PackageList()
