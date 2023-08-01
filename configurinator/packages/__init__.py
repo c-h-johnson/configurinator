@@ -29,15 +29,15 @@ programming = PackageList(
 )
 
 
-def install():
+def install(store):
     groups.add_all(base)
 
-    if yesno('are you a programmer?').result:
+    if store.use('packages.programmer', lambda: yesno('are you a programmer?').result):
         base.add(programming)
 
-    install = base.propose().packages
+    install = base.propose(store).packages
 
     if install:
-        print(f'Installing the following packages: {",".join(install)}')
+        print(f'Installing the following packages: {", ".join(install)}')
         PACKAGE_MANAGER.install(install)
         print('Packages installed successfully')

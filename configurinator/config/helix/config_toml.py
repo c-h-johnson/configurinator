@@ -16,16 +16,16 @@ if platform.system() in ['Linux', 'Darwin']:
 THEME_DEFAULT = 'default'
 
 
-def run():
+def run(store):
     with ConfigEditor(os.path.join(share.root, 'config.toml')) as cfg_edit:
         if not cfg_edit.exists('theme'):
             print('no theme set')
             print('select a theme for helix')
             if THEMES:
-                theme = select(*THEMES, default=THEME_DEFAULT)
+                theme = store.use('helix.theme', lambda: select(*THEMES, default=THEME_DEFAULT))
             else:
                 print('could not locate themes')
-                theme = input('enter the theme (leave blank to skip): ')
+                theme = store.use('helix.theme', lambda: input('enter helix theme (leave blank to skip): '))
 
             if theme:
                 cfg_edit.add(f'theme = "{theme}"', start=True)

@@ -16,11 +16,11 @@ profile_path = dotfile_path('.bash_profile')
 bashrc = dotfile_path('.bashrc')
 
 
-def run():
+def run(store):
     alias.run()
     alternative.run()
     arguments.run()
-    env.run()
+    env.run(store)
     helix.run()
     history.run()
     neovim.run()

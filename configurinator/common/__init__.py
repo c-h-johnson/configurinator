@@ -46,6 +46,9 @@ class File:
     def __init__(self, path: str):
         self._path = path
 
+    def __eq__(self, other) -> bool:
+        return self.path == other.path
+
     @property
     def exists(self) -> bool:
         return os.path.isfile(self._path)
@@ -124,6 +127,10 @@ class GitResource(RemoteResource):
         super().__init__(url)
 
     def download(self, path: str):
+        if os.path.isdir(path):
+            print(f'cannot run git clone because {path} already exists')
+            return
+
         GIT.run('clone', self._url, path)
 
     def update(self, path: str):

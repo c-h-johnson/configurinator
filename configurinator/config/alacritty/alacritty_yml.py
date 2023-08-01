@@ -15,17 +15,17 @@ THEMES = RemoteBundleList(
 )
 
 
-def run():
+def run(store):
     with ConfigEditor(os.path.join(alacritty.root, 'alacritty.yml'), '# ') as cfg_edit:
         h0 = 'font:'
 
         cfg_edit.add('  size: 11', under=h0)
 
-        font = select_font(
+        font = store.use('alacritty.font', lambda: select_font(
                 'Source Code Pro',
                 'DejaVu Sans Mono',
                 default='monospace',
-                )
+                ))
 
         h1 = '  normal:'
         cfg_edit.add(h1, under=h0)
@@ -56,15 +56,12 @@ def run():
 
         h0 = 'import:'
 
-        marker = '  # Theme installed by [script]'
-        if not cfg_edit.exists(marker, True):
-            if yesno('add a theme to alacritty?').result:
-                cfg_edit.add(h0)
-                cfg_edit.add(marker, under=h0)
-                cfg_edit.add(f'  - {select_remote_file(THEMES, alacritty.root).path}', under=marker)
-        else:
-            # TODO update theme if possible
-            pass
+        marker = '  # Theme installed by configurinator'
+        if store.use('alacritty.use_theme', lambda: yesno('add a theme to alacritty?').result):
+            cfg_edit.add(h0)
+            cfg_edit.add(marker, under=h0)
+            theme_path = store.use('alacritty.theme', lambda: select_remote_file(THEMES, alacritty.root).path)
+            cfg_edit.add(f'  - {theme_path}', under=marker)
 
 
 if __name__ == '__main__':

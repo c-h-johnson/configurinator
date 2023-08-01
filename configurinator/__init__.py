@@ -1,26 +1,27 @@
 from configurinator import packages
+from configurinator.persist.store import PersistStore
 from configurinator.utils.env import is_exe, is_root
 
 
-def _user() -> None:
+def _user(store) -> None:
     if packages.PACKAGE_MANAGER and not packages.PACKAGE_MANAGER.root:
-        packages.run()
+        packages.install(store)
 
     if is_exe('alacritty'):
         from configurinator.config import alacritty
-        alacritty.run()
+        alacritty.run(store)
     if is_exe('bash'):
         from configurinator.config import bash
-        bash.run()
+        bash.run(store)
     if is_exe('firefox'):
         from configurinator.config import firefox
         firefox.run()
     if is_exe('git'):
         from configurinator.config import git
-        git.run()
+        git.run(store)
     if is_exe('hx') or is_exe('helix'):
         from configurinator.config import helix
-        helix.run()
+        helix.run(store)
     if is_exe('mako'):
         from configurinator.config import mako
         mako.run()
@@ -35,12 +36,12 @@ def _user() -> None:
         python.run()
     if is_exe('sway'):
         from configurinator.config import sway
-        sway.run()
+        sway.run(store)
 
 
-def _root() -> None:
+def _root(store) -> None:
     if packages.PACKAGE_MANAGER and packages.PACKAGE_MANAGER.root:
-        packages.install()
+        packages.install(store)
 
     if is_exe('makepkg'):
         from configurinator.config import makepkg
@@ -54,7 +55,12 @@ def _root() -> None:
 
 
 def main():
-    if is_root():
-        _root()
-    else:
-        _user()
+    with PersistStore() as store:
+        if is_root():
+            if is_exe('nix'):
+                print('cannot run as root because root is read only on NixOS')
+                return
+
+            _root(store)
+        else:
+            _user(store)

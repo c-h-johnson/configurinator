@@ -11,7 +11,7 @@ def run():
         under = '# reduce disk writes'
 
         if helix.share.EXE_NAME:
-            command = group_exe.editors[helix.share.EXE_NAME].command
+            command = group_exe.EDITOR[helix.share.EXE_NAME].command
             short_alias = f"alias hx='{command}'"
             cfg_edit.add(short_alias, under=under)
             long_alias = f"alias helix='{command}'"

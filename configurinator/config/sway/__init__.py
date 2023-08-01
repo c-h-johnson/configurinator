@@ -4,5 +4,5 @@ from configurinator.utils.env import dotfile_path
 root = dotfile_path('.config/sway')
 
 
-def run():
-    main_config.run()
+def run(store):
+    main_config.run(store)

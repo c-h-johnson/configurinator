@@ -9,7 +9,7 @@ def run():
         under = '# reduce disk writes'
 
         if is_exe('nvim'):
-            cfg_edit.add(f"alias nvim='{group_exe.editors['nvim'].command}'", under=under)
+            cfg_edit.add(f"alias nvim='{group_exe.EDITOR['nvim'].command}'", under=under)
 
             rm(dotfile_path('.local/share/nvim/shada'))
 

@@ -61,7 +61,7 @@ def get_bg(default_files: list[str] = []) -> File:
 def select_exe(exes) -> str:
     for i in exes:
         if i.exists:
-            print(f'selecting {i.name} as editor')
+            print(f'selecting {i.name}')
             return i.command
     print(f'could not find any of {[i.name for i in exes]} on $PATH')
 

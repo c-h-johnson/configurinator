@@ -4,11 +4,11 @@ from configurinator.utils.config import ConfigEditor
 from configurinator.utils.ui import select_exe
 
 
-def run():
+def run(store):
     with ConfigEditor(bash.bashrc) as cfg_edit:
         under = '# editor'
 
-        editor_cmd = select_exe(group_exe.editors.values())
+        editor_cmd = store.use('bash.env.editor', lambda: select_exe(group_exe.EDITOR.values()))
         cfg_edit.add(f"export EDITOR='{editor_cmd}'", under=under)
 
 

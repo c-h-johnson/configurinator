@@ -4,5 +4,5 @@ from configurinator.utils.env import dotfile_path
 gitconfig_path = dotfile_path('.gitconfig')
 
 
-def run():
-    gitconfig.run()
+def run(store):
+    gitconfig.run(store)

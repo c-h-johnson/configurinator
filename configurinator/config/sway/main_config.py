@@ -1,10 +1,11 @@
 import os
 import shutil
 
-from configurinator.config import alacritty, sway
+from configurinator.common import group_exe
+from configurinator.config import sway
 from configurinator.utils.config import ConfigEditor
 from configurinator.utils.env import is_exe
-from configurinator.utils.ui import get_bg, select, yesno
+from configurinator.utils.ui import get_bg, select, select_exe, yesno
 
 CMD_LOCK = 'swaylock -f -c 000000'
 CMD_IDLE = 'swayidle'
@@ -25,7 +26,7 @@ def exec_cmd(bind, cmd):
     return f'bindsym {bind} exec {cmd}'
 
 
-def run(force_bg: bool = False):
+def run(store):
     config_path = os.path.join(sway.root, 'config')
     if not os.path.isfile(config_path):
         shutil.copy('/etc/sway/config', config_path)
@@ -33,10 +34,8 @@ def run(force_bg: bool = False):
     with ConfigEditor(config_path, '#') as cfg_edit:
         under = '# Your preferred terminal emulator'
         var = '$term'
-        if is_exe('alacritty'):
-            cfg_edit.add(f'set {var} {alacritty.command()}', under=under, start=True)
-        elif is_exe('kitty'):
-            cfg_edit.add(f'set {var} kitty', under=under, start=True)
+        terminal = store.use('sway.terminal', lambda: select_exe(group_exe.TERMINAL.values()))
+        cfg_edit.add(f'set {var} {terminal}', under=under, start=True)
         cfg_edit.add(exec_cmd('$mod+Return', var), under='# Start a terminal')
 
         under = ('# Your preferred application launcher\n'
@@ -57,24 +56,24 @@ def run(force_bg: bool = False):
             replace_matching='exec',
         )
 
-        if (cfg_edit.exists(f'output * bg {DEFAULT_WALLPAPERS[5]} fill') or force_bg) and yesno('change the background?').result:
-                new_bg = get_bg(DEFAULT_WALLPAPERS)
-                mode = select(
-                    'stretch',
-                    'fill',
-                    'fit',
-                    'center',
-                    'tile',
-                    default='fill',
-                )
-                cfg_edit.add(
-                    f'output * bg {new_bg.path} {mode}',
-                    under='# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)',
-                    replace_matching='bg',
-                )
+        if store.use('sway.change_bg', lambda: yesno('change the background?').result):
+            new_bg = store.use('sway.bg', lambda: get_bg(DEFAULT_WALLPAPERS))
+            mode = store.use('sway.bg_mode', lambda: select(
+                'stretch',
+                'fill',
+                'fit',
+                'center',
+                'tile',
+                default='fill',
+            ))
+            cfg_edit.add(
+                f'output * bg {new_bg.path} {mode}',
+                under='# Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)',
+                replace_matching='bg',
+            )
 
         # enable swayidle
-        if not cfg_edit.exists(CMD_IDLE) and yesno('Enable swayidle (lock and screen timeout)?'):
+        if store.use('sway.swayidle', lambda: yesno('Enable swayidle (lock and screen timeout)?').result):
             cfg_edit.add_lines(
                 f'exec {CMD_IDLE} -w \\',
                 # lock after 5 minutes
@@ -87,11 +86,9 @@ def run(force_bg: bool = False):
             )
 
         # keyboard layout must be defined in this file else non us+qwerty layouts will not work properly
-        if not cfg_edit.exists('xkb_layout'):
-            layout = input('enter valid code for keyboard layout (e.g. us, gb, etc.): ')
-
-            under = 'input * {'
-            cfg_edit.add(f'    xkb_layout "{layout}"', under=under, enclose='}')
+        layout = store.use('sway.keyboard', lambda: input('enter valid code for keyboard layout (e.g. us, gb, etc.): '))
+        under = 'input * {'
+        cfg_edit.add(f'    xkb_layout "{layout}"', under=under, enclose='}')
 
         under = 'bar {'
         cfg_edit.remove('    position top')
@@ -105,6 +102,3 @@ def run(force_bg: bool = False):
 
         cfg_edit.add('default_border none')
         cfg_edit.add('include /etc/sway/config.d/*')
-
-if __name__ == '__main__':
-    run(force_bg=True)

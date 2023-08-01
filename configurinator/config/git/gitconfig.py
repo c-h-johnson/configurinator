@@ -1,15 +1,18 @@
+import os
+
 from configurinator.common import group_exe
 from configurinator.config import git
 from configurinator.utils.config import ConfigEditor
 from configurinator.utils.ui import select_exe, yesno
 
 
-def run():
+def run(store):
     with ConfigEditor(git.gitconfig_path) as cfg_edit:
-        sign = yesno('Enable git signing?').result
+        sign = store.use('git.sign', lambda: yesno('Enable git signing?').result)
 
         under = '[core]'
-        cfg_edit.add(f'    editor = {select_exe(group_exe.editors.values())}', under=under)
+        editor = store.use('git.editor', lambda: select_exe(group_exe.EDITOR.values()))
+        cfg_edit.add(f'    editor = {editor}', under=under)
         cfg_edit.add('    whitespace = trailing-space,space-before-tab', under=under)
 
         # https://git-scm.com/book/en/v2/Git-Basics-Git-Aliases
@@ -33,13 +36,13 @@ def run():
 
         if sign:
             under = '[user]'
-            cfg_edit.add('    signingkey = /home/<USER>/.ssh/id_ed25519.pub', under=under)
+            cfg_edit.add(f'    signingkey = /home/{os.getlogin()}/.ssh/id_ed25519.pub', under=under)
             under = '[gpg]'
             cfg_edit.add('    format = ssh', under=under)
             under = '[commit]'
-            cfg_edit.add('    gpgsign = true', under=under)
+            cfg_edit.add('    gpgsign = true', under=under, allow_duplicates=True)
             under = '[tag]'
-            cfg_edit.add('    gpgsign = true', under=under)
+            cfg_edit.add('    gpgsign = true', under=under, allow_duplicates=True)
 
 
 if __name__ == '__main__':
