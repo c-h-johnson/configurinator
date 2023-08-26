@@ -85,6 +85,8 @@ def run(store):
                 under='### Idle configuration',
             )
 
+        cfg_edit.add('    bindsym $mod+Tab workspace back_and_forth', under='    # Switch to workspace')
+
         # keyboard layout must be defined in this file else non us+qwerty layouts will not work properly
         layout = store.use('sway.keyboard', lambda: input('enter valid code for keyboard layout (e.g. us, gb, etc.): '))
         under = 'input * {'
